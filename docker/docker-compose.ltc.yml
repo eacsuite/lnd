@@ -1,0 +1,55 @@
+version: '2'
+services:
+    # eac is an image of earthcoin node which used as base image for eacd and
+    # eacctl. The environment variables default values determined on stage of
+    # container start within starting script.
+    eacd:
+      image: eacd
+      container_name: eacd
+      build:
+        context: eacd/
+      volumes:
+        - shared:/rpc
+        - earthcoin:/data
+      environment:
+        - RPCUSER
+        - RPCPASS
+        - NETWORK
+        - DEBUG
+        - MINING_ADDRESS
+      entrypoint: ["./start-eacd.sh"]
+
+    lnd:
+      image: lnd
+      container_name: lnd_eac
+      build:
+        context: ../
+        dockerfile: docker/lnd/Dockerfile
+      environment:
+        - RPCUSER
+        - RPCPASS
+        - NETWORK
+        - CHAIN
+        - DEBUG
+      volumes:
+        - shared:/rpc
+        - lnd_eac:/root/.lnd
+      entrypoint: ["./start-lnd.sh"]
+      links:
+        - "eacd:blockchain"
+
+volumes:
+  # shared volume is need to store the btcd rpc certificates and use it within
+  # eacctl and lnd containers.
+  shared:
+    driver: local
+
+  # earthcoin volume is needed for maintaining blockchain persistence
+  # during eacd container recreation.
+  earthcoin:
+    driver: local
+
+  # lnd volume is used for persisting lnd application data and chain state
+  # during container lifecycle.
+  lnd_eac:
+    driver: local
