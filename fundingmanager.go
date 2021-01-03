@@ -43,12 +43,12 @@ const (
 	minBtcRemoteDelay uint16 = 144
 	maxBtcRemoteDelay uint16 = 2016
 
-	// minLtcRemoteDelay and maxLtcRemoteDelay is the extremes of the
+	// minEacRemoteDelay and maxEacRemoteDelay is the extremes of the
 	// Earthcoin CSV delay we will require the remote to use for its
 	// commitment transaction. The actual delay we will require will be
 	// somewhere between these values, depending on channel size.
-	minLtcRemoteDelay uint16 = 576
-	maxLtcRemoteDelay uint16 = 8064
+	minEacRemoteDelay uint16 = 576
+	maxEacRemoteDelay uint16 = 8064
 
 	// maxWaitNumBlocksFundingConf is the maximum number of blocks to wait
 	// for the funding transaction to be confirmed before forgetting
@@ -66,10 +66,10 @@ const (
 	// in the real world.
 	MaxBtcFundingAmount = eacutil.Amount(1<<24) - 1
 
-	// maxLtcFundingAmount is a soft-limit of the maximum channel size
+	// maxEacFundingAmount is a soft-limit of the maximum channel size
 	// currently accepted on the Earthcoin chain within the Lightning
 	// Protocol.
-	maxLtcFundingAmount = MaxBtcFundingAmount * btcToLtcConversionRate
+	maxEacFundingAmount = MaxBtcFundingAmount * btcToEacConversionRate
 )
 
 var (

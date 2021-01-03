@@ -112,8 +112,8 @@ var (
 	defaultBtcdDir         = eacutil.AppDataDir("btcd", false)
 	defaultBtcdRPCCertFile = filepath.Join(defaultBtcdDir, "rpc.cert")
 
-	defaultLtcdDir         = eacutil.AppDataDir("eacd", false)
-	defaultLtcdRPCCertFile = filepath.Join(defaultLtcdDir, "rpc.cert")
+	defaultEacdDir         = eacutil.AppDataDir("eacd", false)
+	defaultEacdRPCCertFile = filepath.Join(defaultEacdDir, "rpc.cert")
 
 	defaultBitcoindDir  = eacutil.AppDataDir("bitcoin", false)
 	defaultEarthcoindDir = eacutil.AppDataDir("earthcoin", false)
@@ -194,7 +194,7 @@ type Config struct {
 	NeutrinoMode *lncfg.Neutrino `group:"neutrino" namespace:"neutrino"`
 
 	Earthcoin      *lncfg.Chain    `group:"Earthcoin" namespace:"earthcoin"`
-	LtcdMode      *lncfg.Btcd     `group:"eacd" namespace:"eacd"`
+	EacdMode      *lncfg.Btcd     `group:"eacd" namespace:"eacd"`
 	EarthcoindMode *lncfg.Bitcoind `group:"earthcoind" namespace:"earthcoind"`
 
 	Autopilot *lncfg.AutoPilot `group:"Autopilot" namespace:"autopilot"`
@@ -315,10 +315,10 @@ func DefaultConfig() Config {
 			TimeLockDelta: defaultEarthcoinTimeLockDelta,
 			Node:          "eacd",
 		},
-		LtcdMode: &lncfg.Btcd{
-			Dir:     defaultLtcdDir,
+		EacdMode: &lncfg.Btcd{
+			Dir:     defaultEacdDir,
 			RPCHost: defaultRPCHost,
-			RPCCert: defaultLtcdRPCCertFile,
+			RPCCert: defaultEacdRPCCertFile,
 		},
 		EarthcoindMode: &lncfg.Bitcoind{
 			Dir:          defaultEarthcoindDir,
@@ -511,7 +511,7 @@ func ValidateConfig(cfg Config, usageMessage string) (*Config, error) {
 	cfg.InvoiceMacPath = CleanAndExpandPath(cfg.InvoiceMacPath)
 	cfg.LogDir = CleanAndExpandPath(cfg.LogDir)
 	cfg.BtcdMode.Dir = CleanAndExpandPath(cfg.BtcdMode.Dir)
-	cfg.LtcdMode.Dir = CleanAndExpandPath(cfg.LtcdMode.Dir)
+	cfg.EacdMode.Dir = CleanAndExpandPath(cfg.EacdMode.Dir)
 	cfg.BitcoindMode.Dir = CleanAndExpandPath(cfg.BitcoindMode.Dir)
 	cfg.EarthcoindMode.Dir = CleanAndExpandPath(cfg.EarthcoindMode.Dir)
 	cfg.Tor.PrivateKeyPath = CleanAndExpandPath(cfg.Tor.PrivateKeyPath)
@@ -738,7 +738,7 @@ func ValidateConfig(cfg Config, usageMessage string) (*Config, error) {
 
 		switch cfg.Earthcoin.Node {
 		case "eacd":
-			err := parseRPCParams(cfg.Earthcoin, cfg.LtcdMode,
+			err := parseRPCParams(cfg.Earthcoin, cfg.EacdMode,
 				earthcoinChain, funcName)
 			if err != nil {
 				err := fmt.Errorf("unable to load RPC "+
@@ -773,7 +773,7 @@ func ValidateConfig(cfg Config, usageMessage string) (*Config, error) {
 		// Finally we'll register the earthcoin chain as our current
 		// primary chain.
 		cfg.registeredChains.RegisterPrimaryChain(earthcoinChain)
-		MaxFundingAmount = maxLtcFundingAmount
+		MaxFundingAmount = maxEacFundingAmount
 	}
 
 	// Ensure that the user didn't attempt to specify negative values for

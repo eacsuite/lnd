@@ -72,7 +72,7 @@ func TestMigrateInvoices(t *testing.T) {
 
 	var eacNetParams bitcoinCfg.Params
 	eacNetParams.Bech32HRPSegwit = earthcoinCfg.MainNetParams.Bech32HRPSegwit
-	payReqLtc, err := getPayReq(&eacNetParams)
+	payReqEac, err := getPayReq(&eacNetParams)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -82,7 +82,7 @@ func TestMigrateInvoices(t *testing.T) {
 			PaymentRequest: []byte(payReqBtc),
 		},
 		{
-			PaymentRequest: []byte(payReqLtc),
+			PaymentRequest: []byte(payReqEac),
 		},
 	}
 

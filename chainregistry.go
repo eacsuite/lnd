@@ -83,9 +83,9 @@ const (
 	// expressed in sat/kw.
 	defaultEarthcoinStaticFeePerKW = chainfee.SatPerKWeight(50000)
 
-	// btcToLtcConversionRate is a fixed ratio used in order to scale up
+	// btcToEacConversionRate is a fixed ratio used in order to scale up
 	// payments when running on the Earthcoin chain.
-	btcToLtcConversionRate = 60
+	btcToEacConversionRate = 60
 )
 
 // defaultBtcChannelConstraints is the default set of channel constraints that are
@@ -97,9 +97,9 @@ var defaultBtcChannelConstraints = channeldb.ChannelConstraints{
 	MaxAcceptedHtlcs: input.MaxHTLCNumber / 2,
 }
 
-// defaultLtcChannelConstraints is the default set of channel constraints that are
+// defaultEacChannelConstraints is the default set of channel constraints that are
 // meant to be used when initially funding a Earthcoin channel.
-var defaultLtcChannelConstraints = channeldb.ChannelConstraints{
+var defaultEacChannelConstraints = channeldb.ChannelConstraints{
 	DustLimit:        defaultEarthcoinDustLimit,
 	MaxAcceptedHtlcs: input.MaxHTLCNumber / 2,
 }
@@ -401,7 +401,7 @@ func newChainControlFromConfig(cfg *Config, localDB, remoteDB *channeldb.DB,
 		case cfg.Bitcoin.Active:
 			btcdMode = cfg.BtcdMode
 		case cfg.Earthcoin.Active:
-			btcdMode = cfg.LtcdMode
+			btcdMode = cfg.EacdMode
 		}
 		var rpcCert []byte
 		if btcdMode.RawRPCCert != "" {
@@ -513,7 +513,7 @@ func newChainControlFromConfig(cfg *Config, localDB, remoteDB *channeldb.DB,
 	// Select the default channel constraints for the primary chain.
 	channelConstraints := defaultBtcChannelConstraints
 	if cfg.registeredChains.PrimaryChain() == earthcoinChain {
-		channelConstraints = defaultLtcChannelConstraints
+		channelConstraints = defaultEacChannelConstraints
 	}
 
 	keyRing := keychain.NewBtcWalletKeyRing(

@@ -968,8 +968,8 @@ func newServer(cfg *Config, listenAddrs []net.Addr,
 	maxRemoteDelay := maxBtcRemoteDelay
 	if primaryChain == earthcoinChain {
 		chainCfg = cfg.Earthcoin
-		minRemoteDelay = minLtcRemoteDelay
-		maxRemoteDelay = maxLtcRemoteDelay
+		minRemoteDelay = minEacRemoteDelay
+		maxRemoteDelay = maxEacRemoteDelay
 	}
 
 	var chanIDSeed [32]byte

@@ -475,5 +475,5 @@ at the same time), so when working with Earthcoin be sure to set to parameters
 for Earthcoin accordingly. See a more detailed sample config file available
 [here](https://github.com/eacsuite/lnd/blob/master/sample-lnd.conf)
 and explore the other sections for node configuration, including `[eacd]`,
-`[Bitcoind]`, `[Neutrino]`, `[Ltcd]`, and `[Earthcoind]` depending on which
+`[Bitcoind]`, `[Neutrino]`, `[Eacd]`, and `[Earthcoind]` depending on which
 chain and node type you're using.
